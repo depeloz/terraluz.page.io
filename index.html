@@ -1,0 +1,667 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TerraLuz — Cosmética natural, sostenible e inclusiva. Uva + Cúrcuma. Belleza que cuida el planeta.">
+  <title>TerraLuz — Belleza que cuida el planeta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== VARIABLES ===== */
+    :root {
+      --vb:#1a4a0a; --v:#2d7a1a; --vs:#6a9e5a;
+      --d:#c8891a;  --ds:#d4941a; --dc:#e8b84a;
+      --cr:#fdf4e0; --ca:#f5e8c8; --ar:#ede0a8;
+      --vi:#6b1a2d; --ng:#1a1a0a; --gr:#5a5040; --bl:#fff;
+      --r:24px; --rl:48px;
+      --tr:all 0.4s cubic-bezier(.25,.46,.45,.94);
+      --sh:0 4px 24px rgba(26,74,10,.12);
+      --shl:0 16px 56px rgba(26,74,10,.22);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:'Lato',sans-serif;background:var(--cr);color:var(--ng);overflow-x:hidden}
+    img{max-width:100%;display:block;object-fit:cover}
+    a{text-decoration:none;color:inherit}
+    input,textarea,button,select{font-family:inherit}
+
+    /* ===== NAV ===== */
+    .nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:22px 48px;display:flex;justify-content:space-between;align-items:center;transition:var(--tr)}
+    .nav.solid{background:rgba(253,244,224,.97);backdrop-filter:blur(16px);padding:14px 48px;box-shadow:0 2px 32px rgba(26,74,10,.1)}
+    @media(max-width:768px){.nav{padding:16px 24px}.nav.solid{padding:12px 24px}}
+    .nav-brand{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:#fff;transition:color .4s;display:flex;align-items:center;gap:8px}
+    .nav.solid .nav-brand{color:var(--vb)}
+    .nav-logo-img{height:40px;width:auto;mix-blend-mode:screen;filter:brightness(1.1)}
+    .nav.solid .nav-logo-img{mix-blend-mode:multiply}
+    .nav-links{display:flex;gap:36px;list-style:none}
+    .nav-links a{font-size:.82rem;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.9);transition:color .3s;position:relative;padding-bottom:3px}
+    .nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;right:100%;height:1px;background:var(--ds);transition:right .3s ease}
+    .nav-links a:hover::after{right:0}
+    .nav.solid .nav-links a{color:var(--gr)}
+    .nav.solid .nav-links a:hover{color:var(--v)}
+    .nav.solid .nav-links a::after{background:var(--v)}
+    .ham{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1002;padding:4px}
+    .ham span{width:24px;height:2px;background:#fff;border-radius:2px;transition:var(--tr)}
+    .nav.solid .ham span{background:var(--ng)}
+    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .ham.open span:nth-child(2){opacity:0}
+    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .nav-overlay{position:fixed;inset:0;background:var(--vb);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;z-index:1001;transform:translateX(100%);transition:transform .5s cubic-bezier(.25,.46,.45,.94)}
+    .nav-overlay.open{transform:translateX(0)}
+    .nav-overlay a{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--cr);font-weight:600;transition:color .2s}
+    .nav-overlay a:hover{color:var(--ds)}
+    @media(max-width:768px){.nav-links{display:none}.ham{display:flex}}
+
+    /* ===== HERO ===== */
+    .hero{height:100vh;min-height:620px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center}
+    .hero-bg{
+      position:absolute;inset:0;
+      background:url('viña.jpg') center/cover no-repeat,
+                 url('https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?w=1920&fit=crop&q=85') center/cover no-repeat;
+      background-color:#3a6e30;will-change:transform;
+    }
+    .hero-ov{
+      position:absolute;inset:0;
+      background:
+        radial-gradient(ellipse 70% 55% at center 42%, rgba(255,255,255,.55) 0%, rgba(255,255,255,.18) 50%, transparent 80%),
+        linear-gradient(to bottom,rgba(0,0,0,.03) 0%,rgba(0,0,0,.12) 100%);
+    }
+    .fl-leaf{position:absolute;font-size:1.8rem;opacity:.55;pointer-events:none;animation:floatA 5s ease-in-out infinite}
+    .fl1{top:22%;left:5%;animation-delay:0s;transform:rotate(-25deg)}
+    .fl2{top:52%;left:3%;animation-delay:1.2s;transform:rotate(15deg)}
+    .fl3{top:75%;left:7%;animation-delay:.6s;transform:rotate(-10deg);font-size:1.3rem}
+    .fl4{top:18%;right:5%;animation-delay:.4s;transform:rotate(20deg)}
+    .fl5{top:55%;right:3%;animation-delay:1.6s;transform:rotate(-20deg)}
+    .fl6{top:72%;right:7%;animation-delay:.9s;transform:rotate(10deg);font-size:1.3rem}
+    @keyframes floatA{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+    .hero-content{position:relative;z-index:1;max-width:860px;padding:0 24px}
+    .hero-logo-wrap{margin-bottom:24px;animation:fadeUp 1s ease-out both}
+    .hero-logo-img{
+      max-width:600px;width:88%;margin:0 auto;display:block;
+      filter:drop-shadow(0 0 40px rgba(255,255,255,1)) drop-shadow(0 0 20px rgba(255,255,255,.95)) drop-shadow(0 4px 16px rgba(0,0,0,.18));
+    }
+    .hero-sub{font-family:'Dancing Script',cursive;font-size:clamp(1.1rem,2.5vw,1.5rem);color:rgba(255,255,255,.92);display:block;margin-bottom:16px;text-shadow:0 2px 12px rgba(0,0,0,.35);animation:fadeUp 1s .2s ease-out both}
+    .hero-desc{font-size:clamp(.95rem,2vw,1.08rem);color:rgba(255,255,255,.88);line-height:1.85;max-width:560px;margin:0 auto 28px;text-shadow:0 1px 8px rgba(0,0,0,.3);animation:fadeUp 1s .3s ease-out both}
+    .hero-desc em{color:var(--dc);font-style:italic}
+    .hero-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:32px;animation:fadeUp 1s .4s ease-out both}
+    .badge{background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.45);color:rgba(255,255,255,.9);padding:7px 20px;border-radius:50px;font-size:.8rem;backdrop-filter:blur(4px);letter-spacing:.4px}
+    .hero-btns{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;animation:fadeUp 1s .5s ease-out both}
+    .btn-p{display:inline-block;background:var(--v);color:#fff;padding:14px 40px;border-radius:50px;font-size:.88rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;border:2px solid transparent;transition:var(--tr);box-shadow:0 4px 32px rgba(26,74,10,.4)}
+    .btn-p:hover{background:transparent;border-color:#fff;transform:translateY(-3px)}
+    .btn-g{display:inline-block;background:transparent;color:#fff;padding:12px 36px;border-radius:50px;font-size:.88rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;border:2px solid rgba(255,255,255,.6);transition:var(--tr)}
+    .btn-g:hover{background:#fff;color:var(--vb);transform:translateY(-3px)}
+    .btn-out{display:inline-block;background:transparent;color:var(--v);padding:13px 36px;border-radius:50px;font-size:.88rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;border:2px solid var(--v);transition:var(--tr)}
+    .btn-out:hover{background:var(--v);color:#fff;transform:translateY(-3px)}
+
+    /* ===== SHARED ===== */
+    section{padding:90px 48px}
+    @media(max-width:768px){section{padding:64px 24px}}
+    .container{max-width:1200px;margin:0 auto}
+    .chip{display:inline-flex;align-items:center;gap:8px;background:rgba(26,74,10,.08);color:var(--v);border:1px solid rgba(26,74,10,.15);padding:5px 18px;border-radius:50px;font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
+    .chip-lt{background:rgba(253,244,224,.12);color:rgba(253,244,224,.9);border-color:rgba(253,244,224,.22)}
+    .sec-sc{font-family:'Dancing Script',cursive;font-size:clamp(1.2rem,3vw,1.9rem);color:var(--d);display:block;margin-bottom:6px}
+    .sec-tt{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4.5vw,3rem);font-weight:700;line-height:1.15;margin-bottom:16px}
+    .sec-ds{font-size:1rem;color:var(--gr);line-height:1.9;max-width:580px}
+    .tc{text-align:center}.tc .sec-ds{margin-inline:auto}
+
+    /* ===== STRIP ===== */
+    .strip{background:var(--vb);padding:26px 48px}
+    @media(max-width:768px){.strip{padding:20px 24px}}
+    .strip-in{max-width:1200px;margin:0 auto;display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;gap:20px}
+    .strip-item{display:flex;align-items:center;gap:14px;color:var(--cr)}
+    .strip-ic{font-size:1.6rem}
+    .strip-tx strong{display:block;font-size:.88rem;font-weight:700}
+    .strip-tx span{font-size:.76rem;color:rgba(253,244,224,.6)}
+    .strip-div{width:1px;height:40px;background:rgba(253,244,224,.14)}
+    @media(max-width:600px){.strip-div{display:none}}
+
+    /* ===== NOSOTROS ===== */
+    .nosotros{background:var(--cr)}
+    .nos-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+    @media(max-width:900px){.nos-grid{grid-template-columns:1fr;gap:40px}}
+    .nos-frame{border-radius:60% 40% 55% 45% / 55% 45% 55% 45%;overflow:hidden;aspect-ratio:4/5;position:relative}
+    .nos-frame img{width:100%;height:100%;transition:transform .6s ease}
+    .nos-frame:hover img{transform:scale(1.05)}
+    .nos-wrap{position:relative}
+    .nos-dots{position:absolute;bottom:-24px;right:-24px;width:120px;height:120px;z-index:-1;background-image:radial-gradient(circle,var(--vs) 1.5px,transparent 1.5px);background-size:12px 12px;opacity:.45}
+    .nos-deco{position:absolute;top:-18px;left:-18px;font-size:3rem;opacity:.25;transform:rotate(-20deg)}
+    .nos-quote{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.1rem,2.4vw,1.6rem);color:var(--vb);padding-left:22px;border-left:3px solid var(--d);margin:28px 0;line-height:1.5}
+    .nos-stats{display:flex;gap:36px;flex-wrap:wrap;margin-top:32px}
+    .stat-num{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2rem);font-weight:700;color:var(--v);display:block}
+    .stat-label{font-size:.75rem;color:var(--gr);text-transform:uppercase;letter-spacing:1px}
+
+    /* ===== PRODUCTOS ===== */
+    .productos{background:linear-gradient(135deg,var(--cr) 0%,var(--ca) 50%,var(--ar) 100%);position:relative}
+    .productos::before{content:'';position:absolute;inset:0;background:url('flyer.jpg') center/cover no-repeat;opacity:.05;pointer-events:none}
+    .prod-showcase{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center;margin-top:52px}
+    .prod-kit-img{border-radius:var(--rl);overflow:hidden;box-shadow:var(--shl)}
+    .prod-kit-img img{width:100%;object-fit:cover;transition:transform .6s ease}
+    .prod-kit-img:hover img{transform:scale(1.03)}
+    .prod-list{display:flex;flex-direction:column;gap:0}
+    .prod-item{display:flex;align-items:flex-start;gap:16px;padding:20px 0;border-bottom:1px solid rgba(26,74,10,.1)}
+    .prod-item:last-of-type{border-bottom:none}
+    .prod-num{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:700;color:rgba(26,74,10,.1);line-height:1;flex-shrink:0;min-width:44px}
+    .prod-cat{font-size:.7rem;color:var(--d);letter-spacing:2px;text-transform:uppercase;margin-bottom:5px}
+    .prod-name{font-family:'Playfair Display',serif;font-size:1.12rem;font-weight:700;color:var(--vb);margin-bottom:8px;line-height:1.3}
+    .prod-name em{color:var(--d);font-style:normal;font-weight:400;font-size:.92rem}
+    .prod-desc{font-size:.86rem;color:var(--gr);line-height:1.75;margin-bottom:10px}
+    .prod-tags{display:flex;flex-wrap:wrap;gap:6px}
+    .ptag{background:rgba(26,74,10,.07);color:var(--v);border:1px solid rgba(26,74,10,.13);padding:3px 11px;border-radius:50px;font-size:.72rem}
+    .prod-cta{text-align:center;margin-top:40px}
+
+    /* ===== SERVICIOS ===== */
+    .servicios{background:var(--ng)}
+    .servicios .sec-sc{color:var(--ds)}
+    .servicios .sec-tt{color:var(--cr)}
+    .servicios .sec-ds{color:rgba(253,244,224,.65)}
+    .serv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:52px}
+    @media(max-width:1000px){.serv-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:540px){.serv-grid{grid-template-columns:1fr}}
+    .scard{border-radius:var(--r);overflow:hidden;position:relative;min-height:340px;cursor:default}
+    .scard-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s ease;background-color:#2a5a2a}
+    .scard:hover .scard-bg{transform:scale(1.08)}
+    .scard-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,74,10,.88) 30%,rgba(26,74,10,.35) 70%,transparent 100%);transition:background .4s}
+    .scard:hover .scard-ov{background:linear-gradient(to top,rgba(26,74,10,.96) 40%,rgba(26,74,10,.65) 100%)}
+    .scard-body{position:absolute;bottom:0;left:0;right:0;padding:28px 22px;color:#fff}
+    .scard-ic{font-size:2rem;margin-bottom:10px;display:block}
+    .scard-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;margin-bottom:8px;line-height:1.3}
+    .scard-desc{font-size:.83rem;color:rgba(255,255,255,.72);line-height:1.65;max-height:0;overflow:hidden;transition:max-height .5s ease,opacity .4s;opacity:0}
+    .scard:hover .scard-desc{max-height:120px;opacity:1}
+
+    /* ===== VALORES ===== */
+    .valores{background:var(--cr)}
+    .val-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:52px}
+    @media(max-width:900px){.val-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:460px){.val-grid{grid-template-columns:1fr}}
+    .vcard{background:#fff;border:1px solid rgba(26,74,10,.09);border-radius:var(--r);padding:36px 22px;text-align:center;box-shadow:var(--sh);transition:var(--tr)}
+    .vcard:hover{transform:translateY(-6px);box-shadow:var(--shl);border-color:rgba(26,74,10,.2)}
+    .vcard-ic{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.9rem;margin:0 auto 20px}
+    .vi1{background:rgba(74,168,64,.1)}.vi2{background:rgba(0,160,100,.1)}.vi3{background:rgba(80,80,200,.1)}.vi4{background:rgba(26,74,10,.1)}
+    .vcard-name{font-family:'Playfair Display',serif;font-size:1.03rem;color:var(--vb);margin-bottom:10px}
+    .vcard-desc{font-size:.86rem;color:var(--gr);line-height:1.75}
+
+    /* ===== CONTACTO ===== */
+    .contacto{background:var(--ar)}
+    .cont-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+    @media(max-width:900px){.cont-grid{grid-template-columns:1fr;gap:44px}}
+    .cont-item{display:flex;align-items:flex-start;gap:16px;margin-bottom:26px}
+    .cont-ic{width:48px;height:48px;background:rgba(26,74,10,.1);border:1px solid rgba(26,74,10,.14);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+    .cont-item h4{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--vb);margin-bottom:4px}
+    .cont-item p{font-size:.87rem;color:var(--gr);line-height:1.6}
+    .social-row{display:flex;gap:12px;margin-top:32px}
+    .soc-btn{width:46px;height:46px;background:var(--vb);color:var(--cr);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:var(--tr)}
+    .soc-btn:hover{background:var(--v);transform:translateY(-3px)}
+    .cform{background:#fff;border-radius:var(--r);padding:40px;box-shadow:var(--sh)}
+    .cform h3{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--vb);margin-bottom:28px}
+    .frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media(max-width:540px){.frow{grid-template-columns:1fr}}
+    .fg{margin-bottom:18px}
+    .fg label{display:block;font-size:.74rem;font-weight:700;color:var(--vb);letter-spacing:1px;text-transform:uppercase;margin-bottom:7px}
+    .fg input,.fg textarea,.fg select{width:100%;background:var(--cr);border:1.5px solid rgba(26,74,10,.14);border-radius:12px;padding:11px 16px;font-size:.93rem;color:var(--ng);outline:none;transition:border-color .3s;resize:vertical}
+    .fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--v);background:#fff}
+    .fg textarea{min-height:110px}
+    .btn-send{width:100%;background:var(--vb);color:var(--cr);border:none;padding:15px;border-radius:50px;font-size:.88rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:var(--tr);margin-top:6px}
+    .btn-send:hover{background:var(--v);transform:translateY(-2px);box-shadow:0 8px 32px rgba(26,74,10,.3)}
+
+    /* ===== QR ===== */
+    .qrsec{background:var(--vb);padding:80px 48px}
+    @media(max-width:768px){.qrsec{padding:60px 20px}}
+    .qrsec .sec-tt{color:var(--cr)}.qrsec .sec-ds{color:rgba(253,244,224,.65);margin-inline:auto}.qrsec .sec-sc{color:var(--ds)}
+    .qr-wrap{max-width:720px;margin:0 auto;text-align:center}
+    .qr-box{background:var(--cr);border-radius:var(--r);padding:44px 36px 28px;display:inline-block;margin-top:40px;position:relative;box-shadow:0 20px 64px rgba(0,0,0,.3)}
+    .qr-box::before{content:'🌿';position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:2.4rem}
+    #qrcode canvas,#qrcode img{border-radius:8px;margin:0 auto}
+    .qr-url-tx{font-size:.72rem;color:var(--gr);font-family:monospace;word-break:break-all;max-width:240px;margin:14px auto 0}
+    .qr-btns{display:flex;justify-content:center;gap:12px;margin-top:18px;flex-wrap:wrap}
+    .qbtn{background:var(--v);color:#fff;border:none;padding:9px 24px;border-radius:50px;font-size:.8rem;font-weight:700;cursor:pointer;transition:var(--tr);font-family:inherit;letter-spacing:.5px}
+    .qbtn:hover{background:var(--vb);transform:translateY(-2px)}
+    .qbtn.out{background:transparent;color:var(--v);border:2px solid var(--v)}
+    .qbtn.out:hover{background:var(--v);color:#fff}
+    .qr-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+    .qr-in{background:rgba(253,244,224,.08);border:1px solid rgba(253,244,224,.2);color:var(--cr);padding:10px 18px;border-radius:50px;font-size:.86rem;font-family:inherit;width:300px;max-width:100%;outline:none;transition:border-color .25s}
+    .qr-in:focus{border-color:var(--vs)}
+    .qr-in::placeholder{color:rgba(253,244,224,.32)}
+    .qr-hint{color:rgba(253,244,224,.42);font-size:.78rem;margin-top:9px}
+    .qr-steps{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-top:36px}
+    .qstep{display:flex;flex-direction:column;align-items:center;gap:10px;max-width:110px}
+    .qnum{width:40px;height:40px;border-radius:50%;background:rgba(253,244,224,.1);border:2px solid rgba(253,244,224,.28);color:var(--cr);font-weight:700;display:flex;align-items:center;justify-content:center}
+    .qstep-tx{font-size:.74rem;color:rgba(253,244,224,.48);text-align:center;line-height:1.5}
+
+    /* ===== FOOTER ===== */
+    .footer{background:var(--ng);color:var(--cr);padding:56px 48px 24px}
+    @media(max-width:768px){.footer{padding:44px 24px 20px}}
+    .footer-wrap{max-width:1200px;margin:0 auto}
+    .ftop{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+    @media(max-width:900px){.ftop{grid-template-columns:1fr 1fr;gap:28px}}
+    @media(max-width:540px){.ftop{grid-template-columns:1fr;gap:24px}}
+    .fbrand{font-family:'Playfair Display',serif;font-size:1.75rem;color:var(--vs);margin-bottom:14px}
+    .fdesc{font-size:.86rem;color:rgba(253,244,224,.48);line-height:1.8;max-width:280px}
+    .fcol h4{font-family:'Playfair Display',serif;font-size:.9rem;color:var(--ds);margin-bottom:18px}
+    .fcol ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+    .fcol ul li,.fcol ul li a{font-size:.84rem;color:rgba(253,244,224,.48);transition:color .2s}
+    .fcol ul li a:hover{color:var(--cr)}
+    .fbot{padding-top:22px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .fbot p{font-size:.78rem;color:rgba(253,244,224,.33)}
+    .fbot .ac{color:var(--vs)}
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .reveal{opacity:0;transform:translateY(32px);transition:opacity .8s ease,transform .8s ease}
+    .reveal.show{opacity:1;transform:translateY(0)}
+    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+    /* ===== RESPONSIVE FIXES ===== */
+    @media(max-width:768px){
+      .prod-showcase{grid-template-columns:1fr;gap:28px}
+      .hero-logo-img{width:92%}
+    }
+    @media(max-width:900px){.nos-grid{gap:36px}}
+    @media(max-width:540px){
+      .cform{padding:24px 18px}
+      .cform h3{font-size:1.2rem}
+    }
+    @media(max-width:480px){
+      section{padding:52px 18px}
+      .strip{padding:16px 18px}
+      .qrsec{padding:52px 18px}
+      .footer{padding:40px 18px 20px}
+      .vcard{padding:28px 16px}
+      .qr-box{padding:36px 18px 22px}
+    }
+    @media(max-width:420px){
+      .qr-row{flex-direction:column;align-items:center}
+      .qr-in{width:100%}
+      .badge{font-size:.72rem;padding:5px 14px}
+      .btn-p,.btn-g{padding:12px 24px;font-size:.82rem}
+    }
+    @media(max-width:768px){
+      .ham{min-width:44px;min-height:44px;align-items:center;justify-content:center}
+    }
+    @media(max-width:540px){
+      .scard{min-height:280px}
+      .ftop{gap:24px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="topnav">
+  <a href="index.html" class="nav-brand">
+    <img src="Logo.png" class="nav-logo-img" alt="TerraLuz"
+         onerror="this.style.display='none'; document.getElementById('navTxt').style.display='flex'">
+    <span id="navTxt" style="display:none">🌿 TerraLuz</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#productos">Productos</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <div class="ham" id="ham" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+<div class="nav-overlay" id="overlay">
+  <a href="#inicio"    onclick="closeMenu()">Inicio</a>
+  <a href="#nosotros"  onclick="closeMenu()">Nosotros</a>
+  <a href="#productos" onclick="closeMenu()">Productos</a>
+  <a href="#servicios" onclick="closeMenu()">Servicios</a>
+  <a href="#contacto"  onclick="closeMenu()">Contacto</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-ov"></div>
+  <span class="fl-leaf fl1">🍃</span>
+  <span class="fl-leaf fl2">🍃</span>
+  <span class="fl-leaf fl3">🍃</span>
+  <span class="fl-leaf fl4">🍃</span>
+  <span class="fl-leaf fl5">🍃</span>
+  <span class="fl-leaf fl6">🍃</span>
+  <div class="hero-content">
+    <div class="hero-logo-wrap">
+      <img src="Logo.png" class="hero-logo-img" alt="TerraLuz — Belleza que cuida el planeta">
+    </div>
+    <span class="hero-sub">Cosmética natural · Sostenible · Inclusiva</span>
+    <p class="hero-desc">
+      Transformamos los residuos de la industria vitivinícola en belleza pura,
+      aprovechando el poder de la <em>uva</em> y la <em>cúrcuma</em>.
+    </p>
+    <div class="hero-badges">
+      <span class="badge">🍇 Uva antioxidante</span>
+      <span class="badge">🌿 Cúrcuma activa</span>
+      <span class="badge">♻️ Sostenible</span>
+      <span class="badge">⠿ Braille</span>
+    </div>
+    <div class="hero-btns">
+      <a href="#productos" class="btn-p">Ver Productos</a>
+      <a href="#nosotros"  class="btn-g">Nuestra Historia</a>
+    </div>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-in">
+    <div class="strip-item"><span class="strip-ic">🌱</span><div class="strip-tx"><strong>100% Natural</strong><span>Sin parabenos</span></div></div>
+    <div class="strip-div"></div>
+    <div class="strip-item"><span class="strip-ic">♻️</span><div class="strip-tx"><strong>Eco-envases</strong><span>Packaging reciclable</span></div></div>
+    <div class="strip-div"></div>
+    <div class="strip-item"><span class="strip-ic">⠿</span><div class="strip-tx"><strong>Inclusivo</strong><span>Etiquetado Braille</span></div></div>
+    <div class="strip-div"></div>
+    <div class="strip-item"><span class="strip-ic">🍇</span><div class="strip-tx"><strong>Uva + Cúrcuma</strong><span>Poder antioxidante</span></div></div>
+  </div>
+</div>
+
+<!-- NOSOTROS -->
+<section class="nosotros" id="nosotros">
+  <div class="container">
+    <div class="nos-grid">
+      <div class="nos-wrap reveal">
+        <div class="nos-frame">
+          <img src="https://images.unsplash.com/photo-1543362906-acfc16c67564?w=800&fit=crop&q=85"
+               alt="Uvas en la vid — ingrediente principal TerraLuz" loading="lazy">
+        </div>
+        <div class="nos-dots"></div>
+        <span class="nos-deco">🍃</span>
+      </div>
+      <div class="reveal d2">
+        <span class="sec-sc">Innovación con propósito</span>
+        <span class="chip">Nuestra Historia</span>
+        <h2 class="sec-tt" style="color:var(--vb)">De la vid a tu <span style="color:var(--d)">piel</span></h2>
+        <p class="sec-ds">TerraLuz nace de una visión transformadora: aprovechar los residuos de la industria vitivinícola para crear cosmética natural de alto desempeño.</p>
+        <blockquote class="nos-quote">"Porque cuidar de ti no debe significar dañar el entorno."</blockquote>
+        <p class="sec-ds">El poder antioxidante de la <strong style="color:var(--v)">uva</strong> y el efecto regenerador de la <strong style="color:var(--d)">cúrcuma</strong> se unen en fórmulas sostenibles, inclusivas y llenas de naturaleza.</p>
+        <div class="nos-stats">
+          <div><span class="stat-num">100%</span><span class="stat-label">Natural</span></div>
+          <div><span class="stat-num">3+</span><span class="stat-label">Productos</span></div>
+          <div><span class="stat-num">0%</span><span class="stat-label">Residuos</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTOS -->
+<section class="productos" id="productos">
+  <div class="container">
+    <div class="tc reveal">
+      <span class="sec-sc">Formulados con la naturaleza</span>
+      <span class="chip">Nuestra Línea</span>
+      <h2 class="sec-tt" style="color:var(--vb)">Productos <span style="color:var(--d)">Destacados</span></h2>
+      <p class="sec-ds">Cosmética de alto desempeño con extractos de uva y cúrcuma. Ciencia verde para una piel radiante.</p>
+    </div>
+
+    <div class="prod-showcase reveal" style="margin-top:52px">
+      <div class="prod-kit-img reveal d1">
+        <img src="kit.jpg" alt="Kit TerraLuz — Set de belleza natural" loading="lazy">
+      </div>
+      <div class="prod-list reveal d2">
+        <div class="prod-item">
+          <span class="prod-num">01</span>
+          <div>
+            <p class="prod-cat">Bruma Facial · 150 ml</p>
+            <h3 class="prod-name">Bruma Facial Revitalizante<br><em>Uva + Cúrcuma</em></h3>
+            <p class="prod-desc">Refresca e hidrata el rostro al instante. Revitaliza y unifica el tono con extractos naturales.</p>
+            <div class="prod-tags"><span class="ptag">✨ Iluminadora</span><span class="ptag">🌸 Revitalizante</span></div>
+          </div>
+        </div>
+        <div class="prod-item">
+          <span class="prod-num">02</span>
+          <div>
+            <p class="prod-cat">Aceite Corporal · 120 ml</p>
+            <h3 class="prod-name">Aceite Corporal Antiinflamatorio<br><em>Uva + Cúrcuma</em></h3>
+            <p class="prod-desc">Hidrata y nutre con el poder antioxidante de la uva y el efecto antiinflamatorio de la cúrcuma.</p>
+            <div class="prod-tags"><span class="ptag">🍇 Antioxidante</span><span class="ptag">💧 Hidratante</span></div>
+          </div>
+        </div>
+        <div class="prod-item">
+          <span class="prod-num">03</span>
+          <div>
+            <p class="prod-cat">Crema Facial · 50 ml</p>
+            <h3 class="prod-name">Crema Facial Regeneradora<br><em>Uva + Cúrcuma</em></h3>
+            <p class="prod-desc">Regenera y rejuvenece. Piel renovada y luminosa con efecto anti-edad visible.</p>
+            <div class="prod-tags"><span class="ptag">🌱 Regeneradora</span><span class="ptag">⚡ Anti-edad</span></div>
+          </div>
+        </div>
+        <div style="padding-top:24px">
+          <a href="productos.html" class="btn-out">Ver catálogo completo →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section class="servicios" id="servicios">
+  <div class="container">
+    <div class="tc reveal">
+      <span class="sec-sc">Lo que ofrecemos</span>
+      <span class="chip chip-lt">Servicios</span>
+      <h2 class="sec-tt">Tu experiencia <span style="color:var(--ds)">TerraLuz</span></h2>
+      <p class="sec-ds">Más allá de los productos, te acompañamos en tu camino hacia una belleza más natural y consciente.</p>
+    </div>
+    <div class="serv-grid">
+      <div class="scard reveal d1">
+        <div class="scard-bg" style="background-image:url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&fit=crop&q=85')"></div>
+        <div class="scard-ov"></div>
+        <div class="scard-body">
+          <span class="scard-ic">✨</span>
+          <h3 class="scard-title">Rutina Personalizada</h3>
+          <p class="scard-desc">Creamos tu rutina de belleza natural adaptada a tu tipo de piel y necesidades específicas.</p>
+        </div>
+      </div>
+      <div class="scard reveal d2">
+        <div class="scard-bg" style="background-image:url('https://images.unsplash.com/photo-1512909006721-3d6018887383?w=600&fit=crop&q=85')"></div>
+        <div class="scard-ov"></div>
+        <div class="scard-body">
+          <span class="scard-ic">🎁</span>
+          <h3 class="scard-title">Kit de Regalo</h3>
+          <p class="scard-desc">Armamos kits únicos y personalizados para regalar belleza natural en presentación ecológica.</p>
+        </div>
+      </div>
+      <div class="scard reveal d3">
+        <div class="scard-bg" style="background-image:url('https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?w=600&fit=crop&q=85')"></div>
+        <div class="scard-ov"></div>
+        <div class="scard-body">
+          <span class="scard-ic">🔬</span>
+          <h3 class="scard-title">Consulta de Piel</h3>
+          <p class="scard-desc">Análisis y asesoría personalizada sobre tus necesidades cutáneas. Recomendamos los productos ideales.</p>
+        </div>
+      </div>
+      <div class="scard reveal d4">
+        <div class="scard-bg" style="background-image:url('https://images.unsplash.com/photo-1515942400420-2b98fed1f515?w=600&fit=crop&q=85')"></div>
+        <div class="scard-ov"></div>
+        <div class="scard-body">
+          <span class="scard-ic">🚚</span>
+          <h3 class="scard-title">Envío a Domicilio</h3>
+          <p class="scard-desc">Entregamos directamente en tu hogar con packaging ecológico. Rápido, cuidadoso y sustentable.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALORES -->
+<section class="valores">
+  <div class="container">
+    <div class="tc reveal">
+      <span class="sec-sc">Lo que nos define</span>
+      <span class="chip">Nuestros Valores</span>
+      <h2 class="sec-tt" style="color:var(--vb)">Comprometidos con el <span style="color:var(--d)">planeta</span></h2>
+      <p class="sec-ds">Cada decisión en TerraLuz está guiada por principios que hacen la diferencia, para ti y para el mundo.</p>
+    </div>
+    <div class="val-grid">
+      <div class="vcard reveal d1"><div class="vcard-ic vi1">🌱</div><h3 class="vcard-name">Ingredientes Naturales</h3><p class="vcard-desc">100% de origen natural, sin parabenos ni sustancias tóxicas. Pura naturaleza en cada producto.</p></div>
+      <div class="vcard reveal d2"><div class="vcard-ic vi2">♻️</div><h3 class="vcard-name">Envases Reciclables</h3><p class="vcard-desc">Packaging diseñado para minimizar el impacto ambiental. Envases que se reutilizan o reciclan.</p></div>
+      <div class="vcard reveal d3"><div class="vcard-ic vi3">⠿</div><h3 class="vcard-name">Etiquetado Braille</h3><p class="vcard-desc">Comprometidos con la inclusión total. Todos nuestros productos tienen información en Braille.</p></div>
+      <div class="vcard reveal d4"><div class="vcard-ic vi4">🌍</div><h3 class="vcard-name">Economía Circular</h3><p class="vcard-desc">Transformamos residuos vitivinícolas en belleza. Cero desperdicio, máximo valor natural.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contacto" id="contacto">
+  <div class="container">
+    <div class="cont-grid">
+      <div class="reveal">
+        <span class="sec-sc">Escríbenos</span>
+        <span class="chip">Contacto</span>
+        <h2 class="sec-tt" style="color:var(--vb)">¿Tienes alguna <span style="color:var(--d)">pregunta</span>?</h2>
+        <p class="sec-ds">Estamos aquí para ayudarte a elegir el producto ideal y acompañarte en tu camino hacia la belleza natural.</p>
+        <div style="margin-top:36px">
+          <div class="cont-item"><div class="cont-ic">📧</div><div><h4>Email</h4><p>hola@terraluz.cl</p></div></div>
+          <div class="cont-item"><div class="cont-ic">📱</div><div><h4>WhatsApp</h4><p>+56 9 XXXX XXXX</p></div></div>
+          <div class="cont-item"><div class="cont-ic">📍</div><div><h4>Ubicación</h4><p>Valle de Colchagua, Región O'Higgins, Chile</p></div></div>
+        </div>
+        <div class="social-row">
+          <a href="#" class="soc-btn" aria-label="Instagram">📸</a>
+          <a href="#" class="soc-btn" aria-label="Facebook">📘</a>
+          <a href="#" class="soc-btn" aria-label="WhatsApp">💬</a>
+        </div>
+      </div>
+      <div class="reveal d2">
+        <div class="cform">
+          <h3>Envíanos un mensaje</h3>
+          <form onsubmit="handleForm(event)">
+            <div class="frow">
+              <div class="fg"><label>Nombre</label><input type="text" placeholder="Tu nombre" required></div>
+              <div class="fg"><label>Apellido</label><input type="text" placeholder="Tu apellido"></div>
+            </div>
+            <div class="fg"><label>Correo electrónico</label><input type="email" placeholder="tu@email.cl" required></div>
+            <div class="fg">
+              <label>¿En qué podemos ayudarte?</label>
+              <select>
+                <option value="">Selecciona una opción...</option>
+                <option>Consulta sobre productos</option>
+                <option>Rutina personalizada</option>
+                <option>Kit de regalo</option>
+                <option>Información de envío</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div class="fg"><label>Mensaje</label><textarea placeholder="Cuéntanos cómo podemos ayudarte..." required></textarea></div>
+            <button type="submit" class="btn-send">Enviar Mensaje 🌿</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QR -->
+<section class="qrsec" id="qr">
+  <div class="container">
+    <div class="qr-wrap reveal">
+      <span class="sec-sc">Comparte TerraLuz</span>
+      <span class="chip chip-lt">Acceso Rápido</span>
+      <h2 class="sec-tt">Escanea y <span style="color:var(--ds)">descubre</span></h2>
+      <p class="sec-ds">Apunta la cámara de tu celular al código QR para acceder al instante desde cualquier dispositivo.</p>
+      <div class="qr-box">
+        <div id="qrcode"></div>
+        <p class="qr-url-tx" id="qrUrlTx"></p>
+        <div class="qr-btns">
+          <button class="qbtn" onclick="dlQR()">⬇ Descargar QR</button>
+          <button class="qbtn out" onclick="cpURL()">📋 Copiar URL</button>
+        </div>
+      </div>
+      <div class="qr-row">
+        <input type="text" id="customUrl" class="qr-in" placeholder="https://tu-usuario.github.io/terraluz/">
+        <button class="qbtn" onclick="regenQR()">Generar QR</button>
+      </div>
+      <p class="qr-hint">¿Ya tienes URL de GitHub Pages? Pégala aquí.</p>
+      <div class="qr-steps">
+        <div class="qstep"><div class="qnum">1</div><p class="qstep-tx">Abre la cámara</p></div>
+        <div class="qstep"><div class="qnum">2</div><p class="qstep-tx">Apunta al QR</p></div>
+        <div class="qstep"><div class="qnum">3</div><p class="qstep-tx">Toca el enlace</p></div>
+        <div class="qstep"><div class="qnum">4</div><p class="qstep-tx">¡Explora!</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-wrap">
+    <div class="ftop">
+      <div>
+        <div class="fbrand">🌿 TerraLuz</div>
+        <p class="fdesc">Cosmética natural, sostenible e inclusiva. Transformamos los residuos de la industria vitivinícola en belleza que cuida el planeta.</p>
+      </div>
+      <div class="fcol"><h4>Navegar</h4><ul><li><a href="#inicio">Inicio</a></li><li><a href="#nosotros">Nosotros</a></li><li><a href="#productos">Productos</a></li><li><a href="#servicios">Servicios</a></li><li><a href="#contacto">Contacto</a></li></ul></div>
+      <div class="fcol"><h4>Productos</h4><ul><li>Bruma Facial 150ml</li><li>Aceite Corporal 120ml</li><li>Crema Regeneradora 50ml</li><li>Kit TerraLuz</li></ul></div>
+      <div class="fcol"><h4>Contacto</h4><ul><li>hola@terraluz.cl</li><li>+56 9 XXXX XXXX</li><li>Valle de Colchagua</li><li><a href="#">Instagram</a></li></ul></div>
+    </div>
+    <div class="fbot">
+      <p>© 2024 <span class="ac">TerraLuz</span> — Belleza que cuida el planeta</p>
+      <p>🌿 Natural · ♻️ Sostenible · ⠿ Inclusivo</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  /* NAV */
+  const topnav = document.getElementById('topnav')
+  window.addEventListener('scroll', () => topnav.classList.toggle('solid', window.scrollY > 80))
+  function toggleMenu() {
+    const o = document.getElementById('overlay').classList.toggle('open')
+    document.getElementById('ham').classList.toggle('open', o)
+    document.body.style.overflow = o ? 'hidden' : ''
+  }
+  function closeMenu() {
+    document.getElementById('overlay').classList.remove('open')
+    document.getElementById('ham').classList.remove('open')
+    document.body.style.overflow = ''
+  }
+
+  /* PARALLAX */
+  window.addEventListener('scroll', () => {
+    document.getElementById('heroBg').style.transform = `translateY(${window.scrollY * 0.35}px)`
+  }, { passive: true })
+
+  /* SCROLL REVEAL */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show') })
+  }, { threshold: 0.1 })
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el))
+
+  /* QR */
+  let activeUrl = window.location.href
+  let qrInst = null
+  function makeQR(url) {
+    const el = document.getElementById('qrcode')
+    el.innerHTML = ''
+    document.getElementById('qrUrlTx').textContent = url
+    if (typeof QRCode !== 'undefined') {
+      qrInst = new QRCode(el, {
+        text: url, width: 220, height: 220,
+        colorDark: '#1a4a0a', colorLight: '#fdf4e0',
+        correctLevel: QRCode.CorrectLevel.H
+      })
+    }
+  }
+  makeQR(activeUrl)
+  function regenQR() { const v = document.getElementById('customUrl').value.trim(); if (v) { activeUrl = v; makeQR(v) } }
+  function dlQR() {
+    const c = document.querySelector('#qrcode canvas')
+    if (!c) { alert('QR aún no generado — verifica conexión a internet.'); return }
+    const a = document.createElement('a'); a.download = 'TerraLuz-QR.png'; a.href = c.toDataURL(); a.click()
+  }
+  function cpURL() { navigator.clipboard.writeText(activeUrl).then(() => alert('URL copiada ✓')).catch(() => alert(activeUrl)) }
+
+  /* FORM */
+  function handleForm(e) {
+    e.preventDefault()
+    const btn = e.target.querySelector('.btn-send')
+    btn.textContent = '¡Mensaje enviado! 🌿'
+    btn.style.background = '#2d7a1a'
+    setTimeout(() => { btn.textContent = 'Enviar Mensaje 🌿'; btn.style.background = '' }, 3000)
+  }
+</script>
+</body>
+</html>

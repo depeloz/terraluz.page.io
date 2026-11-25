@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos — TerraLuz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== PALETA (igual que index.html) ===== */
+    :root {
+      --vb:#1a4a0a; --v:#2d7a1a; --vs:#6a9e5a;
+      --d:#c8891a;  --ds:#d4941a; --dc:#e8b84a;
+      --cr:#fdf4e0; --ca:#f5e8c8; --ar:#ede0a8;
+      --vi:#6b1a2d; --ti:#8b5e20;
+      --ng:#1a1a0a; --gr:#5a5040; --wh:#fff;
+      --r:24px; --rl:48px;
+      --tr:all 0.4s cubic-bezier(.25,.46,.45,.94);
+      --sh:0 4px 24px rgba(26,74,10,.12);
+      --shl:0 16px 56px rgba(26,74,10,.22);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:'Lato',sans-serif;background:var(--cr);color:var(--ng);overflow-x:hidden}
+    img{max-width:100%;display:block}
+    a{text-decoration:none;color:inherit}
+    input,textarea,button,select{font-family:inherit}
+
+    /* ===== NAV (idéntico a index.html) ===== */
+    .nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:22px 48px;display:flex;justify-content:space-between;align-items:center;transition:var(--tr)}
+    .nav.solid{background:rgba(253,244,224,.97);backdrop-filter:blur(16px);padding:14px 48px;box-shadow:0 2px 32px rgba(26,74,10,.1)}
+    @media(max-width:768px){.nav{padding:16px 24px}.nav.solid{padding:12px 24px}}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--wh);transition:color .4s}
+    .nav.solid .nav-brand{color:var(--vb)}
+    .nav-logo-img{height:40px;width:auto;mix-blend-mode:screen;filter:brightness(1.1)}
+    .nav.solid .nav-logo-img{mix-blend-mode:multiply}
+    .nav-links{display:flex;gap:36px;list-style:none}
+    .nav-links a{font-size:.82rem;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.9);transition:color .3s;position:relative;padding-bottom:3px}
+    .nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;right:100%;height:1px;background:var(--ds);transition:right .3s ease}
+    .nav-links a:hover::after,.nav-links a.active::after{right:0}
+    .nav.solid .nav-links a{color:var(--gr)}
+    .nav.solid .nav-links a:hover,.nav.solid .nav-links a.active{color:var(--v)}
+    .nav.solid .nav-links a::after{background:var(--v)}
+    .ham{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1002;padding:4px}
+    .ham span{width:24px;height:2px;background:var(--wh);border-radius:2px;transition:var(--tr)}
+    .nav.solid .ham span{background:var(--ng)}
+    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .ham.open span:nth-child(2){opacity:0}
+    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .nav-overlay{position:fixed;inset:0;background:var(--vb);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;z-index:1001;transform:translateX(100%);transition:transform .5s cubic-bezier(.25,.46,.45,.94)}
+    .nav-overlay.open{transform:translateX(0)}
+    .nav-overlay a{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--cr);font-weight:600;transition:color .2s}
+    .nav-overlay a:hover{color:var(--ds)}
+    @media(max-width:768px){.nav-links{display:none}.ham{display:flex}}
+
+    /* ===== BANNER HERO (mismo estilo que index.html) ===== */
+    .banner{
+      height:70vh;min-height:480px;
+      position:relative;overflow:hidden;
+      display:flex;align-items:center;justify-content:center;text-align:center;
+    }
+    .banner-bg{
+      position:absolute;inset:0;
+      background:url('viña.jpg') center/cover no-repeat,
+                 url('https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?w=1920&fit=crop&q=85') center/cover no-repeat;
+      background-color:#3a6e30;
+      will-change:transform;
+    }
+    /* Overlay — igual que index.html para coherencia visual */
+    .banner-ov{
+      position:absolute;inset:0;
+      background:
+        radial-gradient(ellipse 70% 55% at center 42%, rgba(255,255,255,.55) 0%, rgba(255,255,255,.18) 50%, transparent 80%),
+        linear-gradient(to bottom, rgba(0,0,0,.03) 0%, rgba(0,0,0,.12) 100%);
+    }
+    /* Hojas flotantes */
+    .fl-leaf{position:absolute;font-size:1.8rem;opacity:.5;pointer-events:none;animation:floatA 5s ease-in-out infinite}
+    .fl1{top:20%;left:5%;animation-delay:0s}
+    .fl2{top:55%;left:3%;animation-delay:1.2s}
+    .fl3{top:75%;left:7%;animation-delay:.6s;font-size:1.3rem}
+    .fl4{top:18%;right:5%;animation-delay:.4s}
+    .fl5{top:52%;right:3%;animation-delay:1.6s}
+    .fl6{top:72%;right:7%;animation-delay:.9s;font-size:1.3rem}
+    @keyframes floatA{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+
+    .banner-ct{position:relative;z-index:1;max-width:800px;padding:0 24px}
+    .banner-logo-wrap{margin-bottom:20px;animation:fadeUp 1s ease-out both}
+    .banner-logo-img{
+      max-width:460px;width:80%;margin:0 auto;display:block;
+      /* Mismo halo blanco que index.html */
+      filter:
+        drop-shadow(0 0 40px rgba(255,255,255,1))
+        drop-shadow(0 0 20px rgba(255,255,255,.95))
+        drop-shadow(0 4px 16px rgba(0,0,0,.18));
+    }
+    .banner-sub{
+      font-family:'Dancing Script',cursive;
+      font-size:clamp(1.1rem,2.5vw,1.6rem);
+      color:rgba(255,255,255,.92);
+      text-shadow:0 2px 12px rgba(0,0,0,.35);
+      animation:fadeUp 1s .2s ease-out both;
+    }
+
+    /* ===== FILTER BAR ===== */
+    .fbar{background:var(--vb);padding:16px 48px;position:sticky;top:57px;z-index:90}
+    @media(max-width:768px){.fbar{padding:14px 20px}}
+    .fbar-in{max-width:1200px;margin:0 auto;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+    .fbtn{background:rgba(253,244,224,.08);border:1px solid rgba(253,244,224,.22);color:rgba(253,244,224,.7);padding:8px 22px;border-radius:50px;font-size:.78rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:var(--tr);font-family:inherit}
+    .fbtn.on,.fbtn:hover{background:var(--ds);border-color:var(--ds);color:var(--ng)}
+
+    /* ===== SHARED ===== */
+    .container{max-width:1200px;margin:0 auto}
+    section{padding:90px 48px}
+    @media(max-width:768px){section{padding:64px 24px}}
+    .chip{display:inline-flex;background:rgba(26,74,10,.08);color:var(--v);border:1px solid rgba(26,74,10,.15);padding:5px 18px;border-radius:50px;font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
+    .sec-sc{font-family:'Dancing Script',cursive;font-size:clamp(1.2rem,3vw,1.9rem);color:var(--d);display:block;margin-bottom:6px}
+    .sec-tt{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4.5vw,3rem);font-weight:700;line-height:1.15;margin-bottom:16px}
+    .sec-ds{font-size:1rem;color:var(--gr);line-height:1.9;max-width:580px}
+    .tc{text-align:center}.tc .sec-ds{margin-inline:auto}
+    .btn-dark{display:inline-block;background:var(--vb);color:var(--cr);padding:14px 40px;border-radius:50px;font-size:.88rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;transition:var(--tr)}
+    .btn-dark:hover{background:var(--v);transform:translateY(-3px)}
+    .btn-out{display:inline-block;background:transparent;color:var(--v);padding:13px 36px;border-radius:50px;font-size:.88rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;border:2px solid var(--v);transition:var(--tr)}
+    .btn-out:hover{background:var(--v);color:var(--wh);transform:translateY(-3px)}
+
+    /* ===== SHOWCASE — foto productos.jpg ===== */
+    .showcase{
+      background:linear-gradient(135deg,var(--cr) 0%,var(--ca) 50%,var(--ar) 100%);
+      position:relative;
+    }
+    .showcase::before{
+      content:'';position:absolute;inset:0;
+      background:url('viña.jpg') center/cover;
+      background-color:#3a6e30;
+      opacity:.04;pointer-events:none;
+    }
+
+    .products-photo-wrap{
+      border-radius:var(--rl);overflow:hidden;
+      box-shadow:0 20px 64px rgba(26,74,10,.2);
+      margin-bottom:60px;
+      position:relative;
+    }
+    .products-photo-wrap img{
+      width:100%;max-height:560px;
+      object-fit:cover;object-position:center top;
+      display:block;
+      transition:transform .6s ease;
+    }
+    .products-photo-wrap:hover img{transform:scale(1.02)}
+
+    /* ===== CARDS individuales ===== */
+    .prod-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+    @media(max-width:900px){.prod-cards{grid-template-columns:1fr}}
+
+    .pcard{
+      background:var(--wh);border-radius:var(--rl);
+      box-shadow:var(--sh);transition:var(--tr);
+      border:1px solid rgba(200,137,26,.12);
+      overflow:hidden;
+    }
+    .pcard:hover{transform:translateY(-6px);box-shadow:var(--shl);border-color:rgba(200,137,26,.3)}
+
+    /* Cabecera de color en cada card */
+    .pcard-head{
+      padding:28px 24px 20px;
+      text-align:center;
+      position:relative;
+    }
+    .pc1{background:linear-gradient(135deg,#f5e8c8,#ede0a8)}
+    .pc2{background:linear-gradient(135deg,#f0e4c0,#e8d8a0)}
+    .pc3{background:linear-gradient(135deg,#ede0c0,#e0d098)}
+
+    .pcard-num{
+      font-family:'Playfair Display',serif;
+      font-size:4rem;font-weight:700;
+      color:rgba(26,74,10,.08);
+      position:absolute;top:8px;right:16px;
+      line-height:1;
+    }
+    .pcard-vol{
+      display:inline-block;
+      background:var(--vb);color:var(--cr);
+      padding:4px 16px;border-radius:50px;
+      font-size:.72rem;font-weight:700;letter-spacing:.5px;
+      margin-bottom:12px;
+    }
+    .pcard-icon{font-size:2.6rem;margin-bottom:8px;display:block}
+
+    .pcard-body{padding:24px}
+    .pcard-cat{font-size:.7rem;color:var(--d);letter-spacing:2px;text-transform:uppercase;margin-bottom:7px}
+    .pcard-name{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--vb);margin-bottom:12px;line-height:1.3}
+    .pcard-desc{font-size:.88rem;color:var(--gr);line-height:1.8;margin-bottom:18px}
+
+    /* Beneficios */
+    .bens{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:18px}
+    .bens li{font-size:.85rem;color:var(--ng);display:flex;align-items:center;gap:10px}
+    .bens li::before{content:'✓';color:var(--v);font-weight:700;flex-shrink:0;font-size:.9rem}
+
+    /* Ingredientes */
+    .ings-box{background:rgba(26,74,10,.05);border:1px solid rgba(26,74,10,.1);border-radius:12px;padding:12px 14px;margin-bottom:16px}
+    .ings-label{font-size:.68rem;font-weight:700;color:var(--v);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+    .ings-tags{display:flex;flex-wrap:wrap;gap:6px}
+    .itag{background:rgba(26,74,10,.08);color:var(--v);border:1px solid rgba(26,74,10,.14);padding:3px 10px;border-radius:50px;font-size:.72rem}
+
+    .pdtags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+    .ptg{background:rgba(26,74,10,.06);color:var(--v);border:1px solid rgba(26,74,10,.12);padding:3px 12px;border-radius:50px;font-size:.72rem}
+
+    .howbox{background:rgba(200,137,26,.07);border-left:3px solid var(--d);padding:11px 14px;border-radius:0 10px 10px 0}
+    .howbox strong{font-size:.68rem;font-weight:700;color:var(--d);letter-spacing:1.2px;text-transform:uppercase;display:block;margin-bottom:4px}
+    .howbox p{font-size:.84rem;color:var(--gr);line-height:1.65}
+
+    /* ===== KIT SECTION ===== */
+    .kitsec{background:linear-gradient(135deg,var(--ca),var(--ar))}
+
+    .kit-layout{
+      display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;
+      margin-top:52px;
+    }
+    @media(max-width:800px){.kit-layout{grid-template-columns:1fr;gap:32px}}
+
+    .kit-photo-wrap{border-radius:var(--rl);overflow:hidden;box-shadow:0 20px 64px rgba(26,74,10,.18)}
+    .kit-photo-wrap img{width:100%;object-fit:cover;display:block;transition:transform .6s ease}
+    .kit-photo-wrap:hover img{transform:scale(1.03)}
+
+    .kit-info{}
+    .kit-name{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;color:var(--vb);margin-bottom:14px;line-height:1.2}
+    .kit-desc{font-size:.95rem;color:var(--gr);line-height:1.85;margin-bottom:28px}
+    .kit-inc-label{font-size:.7rem;font-weight:700;color:var(--v);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px}
+    .kit-inc-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+    .kit-inc-list li{display:flex;align-items:center;gap:14px;font-size:.9rem;color:var(--ng)}
+    .kit-ic{width:36px;height:36px;border-radius:50%;background:rgba(200,137,26,.12);border:1px solid rgba(200,137,26,.25);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+    .kit-tags{display:flex;flex-wrap:wrap;gap:7px}
+    .ktag{background:rgba(200,137,26,.1);border:1px solid rgba(200,137,26,.22);color:var(--d);padding:4px 14px;border-radius:50px;font-size:.73rem}
+
+    /* ===== INGREDIENTES ESTRELLA ===== */
+    .ingsec{background:var(--vb)}
+    .ingsec .sec-tt{color:var(--cr)}
+    .ingsec .sec-ds{color:rgba(253,244,224,.65)}
+    .ingsec .sec-sc{color:var(--ds)}
+    .ing-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:52px}
+    @media(max-width:640px){.ing-grid{grid-template-columns:1fr}}
+    .igcard{border-radius:var(--r);overflow:hidden;position:relative;min-height:280px}
+    .igbg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s ease;background-color:var(--v)}
+    .igcard:hover .igbg{transform:scale(1.06)}
+    .igov{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,74,10,.92) 35%,rgba(26,74,10,.4) 70%,transparent)}
+    .igbd{position:absolute;bottom:0;left:0;right:0;padding:28px 24px;color:var(--wh)}
+    .igem{font-size:2.2rem;margin-bottom:9px;display:block}
+    .ignm{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;margin-bottom:7px}
+    .igdsc{font-size:.86rem;color:rgba(255,255,255,.75);line-height:1.7}
+    .igprops{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+    .igp{background:rgba(253,244,224,.12);border:1px solid rgba(253,244,224,.2);color:rgba(253,244,224,.85);padding:3px 11px;border-radius:50px;font-size:.72rem}
+
+    /* ===== BACK CTA ===== */
+    .backcta{background:var(--cr);padding:72px 48px;text-align:center}
+    @media(max-width:768px){.backcta{padding:60px 24px}}
+    .backcta p{font-size:1rem;color:var(--gr);max-width:480px;margin:0 auto 28px;line-height:1.8}
+    .backcta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+    /* ===== FOOTER ===== */
+    .footer{background:var(--ng);color:var(--cr);padding:56px 48px 24px;border-top:1px solid rgba(200,137,26,.15)}
+    @media(max-width:768px){.footer{padding:48px 24px 20px}}
+    .footer-wrap{max-width:1200px;margin:0 auto}
+    .ftop{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+    @media(max-width:900px){.ftop{grid-template-columns:1fr 1fr;gap:28px}}
+    @media(max-width:540px){.ftop{grid-template-columns:1fr}}
+    .fbrand{font-family:'Playfair Display',serif;font-size:1.75rem;color:var(--vs);margin-bottom:14px}
+    .fdesc{font-size:.86rem;color:rgba(253,244,224,.46);line-height:1.8;max-width:280px}
+    .fcol h4{font-family:'Playfair Display',serif;font-size:.9rem;color:var(--ds);margin-bottom:18px}
+    .fcol ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+    .fcol ul li,.fcol ul li a{font-size:.84rem;color:rgba(253,244,224,.46);transition:color .2s}
+    .fcol ul li a:hover{color:var(--cr)}
+    .fbot{padding-top:22px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .fbot p{font-size:.78rem;color:rgba(253,244,224,.33)}
+    .fbot .ac{color:var(--vs)}
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+    .reveal{opacity:0;transform:translateY(32px);transition:opacity .8s ease,transform .8s ease}
+    .reveal.show{opacity:1;transform:translateY(0)}
+    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+    /* ===== RESPONSIVE MOBILE FIXES ===== */
+
+    /* 1. prod-cards: paso intermedio 2 columnas en tablet */
+    @media(max-width:900px) and (min-width:541px){
+      .prod-cards { grid-template-columns:1fr 1fr }
+    }
+
+    /* 2. products-photo-wrap: altura máxima reducida en móvil */
+    @media(max-width:768px){
+      .products-photo-wrap img { max-height:360px }
+      .banner { height:55vh; min-height:380px }
+    }
+
+    /* 3. kit-layout: gap reducido en tablet */
+    @media(max-width:900px) and (min-width:801px){
+      .kit-layout { gap:32px }
+    }
+
+    /* 4. Secciones: menos padding en móvil pequeño */
+    @media(max-width:480px){
+      section { padding:52px 18px }
+      .backcta { padding:48px 18px }
+      .footer { padding:40px 18px 20px }
+      .pcard-body { padding:18px }
+      .kit-info { padding:28px 20px }
+    }
+
+    /* 5. Filter bar: botones más pequeños en móvil */
+    @media(max-width:480px){
+      .fbtn { padding:7px 16px; font-size:.72rem }
+      .fbar { padding:12px 16px; top:49px }
+    }
+
+    /* 6. Hamburger: área mínima de toque 44×44px */
+    @media(max-width:768px){
+      .ham { min-width:44px; min-height:44px; align-items:center; justify-content:center }
+    }
+
+    /* 7. Banner logo: ajuste en móvil muy pequeño */
+    @media(max-width:380px){
+      .banner-logo-img { width:90% }
+      .banner-sub { font-size:1rem }
+    }
+
+    /* 8. Ingredientes: igcards más altas en móvil */
+    @media(max-width:640px){
+      .igcard { min-height:220px }
+    }
+
+    /* 9. Back CTA botones: columna en móvil pequeño */
+    @media(max-width:420px){
+      .backcta-btns { flex-direction:column; align-items:center }
+      .btn-dark, .btn-out { width:100%; text-align:center; padding:13px 24px }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav" id="topnav">
+  <a href="index.html" class="nav-brand">
+    <img src="Logo.png" class="nav-logo-img" alt="TerraLuz"
+         onerror="this.style.display='none'; document.getElementById('navTxt').style.display='flex'">
+    <span id="navTxt" style="display:none">🌿 TerraLuz</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="index.html#nosotros">Nosotros</a></li>
+    <li><a href="productos.html" class="active">Productos</a></li>
+    <li><a href="index.html#servicios">Servicios</a></li>
+    <li><a href="index.html#contacto">Contacto</a></li>
+  </ul>
+  <div class="ham" id="ham" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+<div class="nav-overlay" id="overlay">
+  <a href="index.html"          onclick="closeMenu()">Inicio</a>
+  <a href="index.html#nosotros" onclick="closeMenu()">Nosotros</a>
+  <a href="productos.html"      onclick="closeMenu()">Productos</a>
+  <a href="index.html#servicios"onclick="closeMenu()">Servicios</a>
+  <a href="index.html#contacto" onclick="closeMenu()">Contacto</a>
+</div>
+
+<!-- ===== BANNER (mismo estilo que index.html) ===== -->
+<div class="banner">
+  <div class="banner-bg" id="bannerBg"></div>
+  <div class="banner-ov"></div>
+  <span class="fl-leaf fl1">🍃</span>
+  <span class="fl-leaf fl2">🍃</span>
+  <span class="fl-leaf fl3">🍃</span>
+  <span class="fl-leaf fl4">🍃</span>
+  <span class="fl-leaf fl5">🍃</span>
+  <span class="fl-leaf fl6">🍃</span>
+  <div class="banner-ct">
+    <div class="banner-logo-wrap">
+      <img src="Logo.png" class="banner-logo-img" alt="TerraLuz"
+           onerror="this.style.display='none'">
+    </div>
+    <p class="banner-sub">Nuestra Línea de Productos</p>
+  </div>
+</div>
+
+<!-- ===== FILTER BAR ===== -->
+<div class="fbar">
+  <div class="fbar-in">
+    <button class="fbtn on" onclick="filter('todos',this)">Todos</button>
+    <button class="fbtn"    onclick="filter('corporal',this)">Corporal</button>
+    <button class="fbtn"    onclick="filter('facial',this)">Facial</button>
+    <button class="fbtn"    onclick="filter('kit',this)">Kit Regalo</button>
+  </div>
+</div>
+
+<!-- ===== SHOWCASE — foto real de los productos ===== -->
+<section class="showcase" id="catalogo">
+  <div class="container">
+    <div class="tc reveal">
+      <span class="sec-sc">Formulados con la naturaleza</span>
+      <span class="chip">Colección TerraLuz</span>
+      <h2 class="sec-tt" style="color:var(--vb)">Productos <span style="color:var(--d)">Destacados</span></h2>
+      <p class="sec-ds">Cosmética natural con extractos de uva y cúrcuma. Sin parabenos, envases reciclables y etiquetado en Braille.</p>
+    </div>
+
+    <!-- Foto real de los 3 productos juntos -->
+    <div class="products-photo-wrap reveal" style="margin-top:48px" data-cat="todos">
+      <img src="productos.png"
+           alt="TerraLuz — Bruma Facial, Aceite Corporal y Crema Facial Regeneradora"
+           onerror="this.closest('.products-photo-wrap').style.display='none'">
+    </div>
+
+    <!-- Cards individuales con detalle de cada producto -->
+    <div class="prod-cards" style="margin-top:0">
+
+      <!-- Bruma Facial -->
+      <div class="pcard reveal d1" data-cat="facial">
+        <div class="pcard-head pc1">
+          <span class="pcard-num">01</span>
+          <span class="pcard-icon">💨</span>
+          <span class="pcard-vol">150 ml</span>
+        </div>
+        <div class="pcard-body">
+          <p class="pcard-cat">Bruma Facial</p>
+          <h3 class="pcard-name">Bruma Facial<br>Revitalizante<br>Uva + Cúrcuma</h3>
+          <p class="pcard-desc">Refresca e hidrata el rostro al instante. Revitaliza y unifica el tono con agua floral de uva y extracto de cúrcuma.</p>
+          <ul class="bens">
+            <li>Hidratación inmediata y efecto refrescante</li>
+            <li>Ilumina y unifica el tono</li>
+            <li>Fija el maquillaje y prolonga su duración</li>
+            <li>Aroma suave y natural</li>
+          </ul>
+          <div class="ings-box">
+            <p class="ings-label">Ingredientes destacados</p>
+            <div class="ings-tags">
+              <span class="itag">Agua Floral de Uva</span>
+              <span class="itag">Extracto de Cúrcuma</span>
+              <span class="itag">Aloe Vera BIO</span>
+              <span class="itag">Niacinamida</span>
+            </div>
+          </div>
+          <div class="pdtags">
+            <span class="ptg">✨ Iluminadora</span>
+            <span class="ptg">🌸 Revitalizante</span>
+            <span class="ptg">🌿 Vegan</span>
+          </div>
+          <div class="howbox">
+            <strong>Modo de uso</strong>
+            <p>Pulverizar a 20–30 cm del rostro. Dejar secar o difuminar suavemente. Usar sobre piel limpia o maquillaje.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aceite Corporal -->
+      <div class="pcard reveal d2" data-cat="corporal">
+        <div class="pcard-head pc2">
+          <span class="pcard-num">02</span>
+          <span class="pcard-icon">🫙</span>
+          <span class="pcard-vol">120 ml</span>
+        </div>
+        <div class="pcard-body">
+          <p class="pcard-cat">Aceite Corporal</p>
+          <h3 class="pcard-name">Aceite Corporal<br>Antiinflamatorio<br>Uva + Cúrcuma</h3>
+          <p class="pcard-desc">Hidrata y nutre con el poder antioxidante de la uva y el efecto antiinflamatorio de la cúrcuma. Absorción rápida sin residuo graso.</p>
+          <ul class="bens">
+            <li>Hidratación profunda y duradera</li>
+            <li>Efecto antiinflamatorio y calmante</li>
+            <li>Acción antioxidante de alto espectro</li>
+            <li>Absorción rápida, sin residuo</li>
+          </ul>
+          <div class="ings-box">
+            <p class="ings-label">Ingredientes destacados</p>
+            <div class="ings-tags">
+              <span class="itag">Extracto Vitis Vinifera</span>
+              <span class="itag">Aceite de Cúrcuma</span>
+              <span class="itag">Aceite de Jojoba</span>
+              <span class="itag">Vitamina E</span>
+            </div>
+          </div>
+          <div class="pdtags">
+            <span class="ptg">🍇 Antioxidante</span>
+            <span class="ptg">💧 Hidratante</span>
+            <span class="ptg">🌿 Vegan</span>
+          </div>
+          <div class="howbox">
+            <strong>Modo de uso</strong>
+            <p>Aplicar sobre piel limpia con suaves movimientos circulares. Preferentemente después del baño.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Crema Facial -->
+      <div class="pcard reveal d3" data-cat="facial">
+        <div class="pcard-head pc3">
+          <span class="pcard-num">03</span>
+          <span class="pcard-icon">🌟</span>
+          <span class="pcard-vol">50 ml</span>
+        </div>
+        <div class="pcard-body">
+          <p class="pcard-cat">Crema Facial</p>
+          <h3 class="pcard-name">Crema Facial<br>Regeneradora<br>Uva + Cúrcuma</h3>
+          <p class="pcard-desc">Regenera y rejuvenece la piel con resveratrol de uva y curcumina activa. Efecto antiedad profundo y luminosidad visible.</p>
+          <ul class="bens">
+            <li>Regeneración celular nocturna</li>
+            <li>Hidratación sostenida hasta 24h</li>
+            <li>Reduce visiblemente las líneas finas</li>
+            <li>Piel más firme y luminosa en 2 semanas</li>
+          </ul>
+          <div class="ings-box">
+            <p class="ings-label">Ingredientes destacados</p>
+            <div class="ings-tags">
+              <span class="itag">Resveratrol de Uva</span>
+              <span class="itag">Curcumina Activa</span>
+              <span class="itag">Vitamina C Natural</span>
+              <span class="itag">Manteca de Karité</span>
+            </div>
+          </div>
+          <div class="pdtags">
+            <span class="ptg">🌱 Regeneradora</span>
+            <span class="ptg">⚡ Anti-edad</span>
+            <span class="ptg">🌙 Nocturna</span>
+          </div>
+          <div class="howbox">
+            <strong>Modo de uso</strong>
+            <p>Aplicar por la noche sobre rostro y cuello con suaves toques hasta absorber. Evitar contorno de ojos.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /prod-cards -->
+  </div>
+</section>
+
+<!-- ===== KIT REGALO ===== -->
+<section class="kitsec" id="kitsec">
+  <div class="container">
+    <div class="reveal">
+      <span class="sec-sc">La experiencia completa</span>
+      <span class="chip">Kit Especial</span>
+      <h2 class="sec-tt" style="color:var(--vb)">Kit <span style="color:var(--d)">TerraLuz</span></h2>
+    </div>
+    <div class="kit-layout" data-cat="kit">
+      <!-- Foto real del kit/caja -->
+      <div class="kit-photo-wrap reveal">
+        <img src="kit.jpg"
+             alt="Kit TerraLuz — Set de belleza natural en caja regalo"
+             onerror="this.closest('.kit-photo-wrap').style.display='none'">
+      </div>
+      <div class="kit-info reveal d2">
+        <p class="sec-sc">Descubre el poder de la naturaleza</p>
+        <h3 class="kit-name">Kit TerraLuz<br>Belleza Completa</h3>
+        <p class="kit-desc">La rutina de belleza completa en una sola caja. Presentada en packaging ecológico reciclable, con el mensaje "Descubre el poder de la naturaleza en tu rutina de belleza". Ideal para regalar.</p>
+        <p class="kit-inc-label">Incluye</p>
+        <ul class="kit-inc-list">
+          <li><span class="kit-ic">🫙</span><span>Aceite Corporal Antiinflamatorio Uva + Cúrcuma · 120 ml</span></li>
+          <li><span class="kit-ic">💨</span><span>Bruma Facial Revitalizante Uva + Cúrcuma · 120 ml</span></li>
+          <li><span class="kit-ic">🌟</span><span>Crema Facial Regeneradora Uva + Cúrcuma · 50 ml</span></li>
+          <li><span class="kit-ic">📦</span><span>Caja regalo ecológica reciclable</span></li>
+        </ul>
+        <div class="kit-tags">
+          <span class="ktag">🎁 Ideal para regalar</span>
+          <span class="ktag">📦 Caja ecológica</span>
+          <span class="ktag">🌿 100% Natural</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== INGREDIENTES ===== -->
+<section class="ingsec">
+  <div class="container">
+    <div class="tc reveal">
+      <span class="sec-sc">El secreto está en la naturaleza</span>
+      <span class="chip" style="background:rgba(253,244,224,.1);color:rgba(253,244,224,.85);border-color:rgba(253,244,224,.2)">Ingredientes</span>
+      <h2 class="sec-tt">Nuestros ingredientes <span style="color:var(--ds)">estrella</span></h2>
+      <p class="sec-ds">Dos ingredientes excepcionales rescatados de la industria vitivinícola.</p>
+    </div>
+    <div class="ing-grid">
+      <div class="igcard reveal d1">
+        <div class="igbg" style="background-image:url('https://images.unsplash.com/photo-1543362906-acfc16c67564?w=800&fit=crop&q=85')"></div>
+        <div class="igov"></div>
+        <div class="igbd">
+          <span class="igem">🍇</span>
+          <h3 class="ignm">Extracto de Uva</h3>
+          <p class="igdsc">Rico en OPC y polifenoles, uno de los antioxidantes más potentes de la naturaleza. Obtenido de residuos vitivinícolas — economía circular en acción.</p>
+          <div class="igprops">
+            <span class="igp">Alto poder antioxidante</span>
+            <span class="igp">Anti-envejecimiento</span>
+            <span class="igp">Regenerador celular</span>
+          </div>
+        </div>
+      </div>
+      <div class="igcard reveal d2">
+        <div class="igbg" style="background-image:url('https://images.unsplash.com/photo-1615485020979-7ee3cee7e5b3?w=800&fit=crop&q=85')"></div>
+        <div class="igov"></div>
+        <div class="igbd">
+          <span class="igem">🌿</span>
+          <h3 class="ignm">Cúrcuma Activa</h3>
+          <p class="igdsc">La curcumina calma, ilumina y regenera. Potente efecto antiinflamatorio que combate rojeces y aporta luminosidad desde la primera aplicación.</p>
+          <div class="igprops">
+            <span class="igp">Antiinflamatorio</span>
+            <span class="igp">Efecto calmante</span>
+            <span class="igp">Iluminador natural</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BACK CTA ===== -->
+<div class="backcta">
+  <span class="sec-sc" style="display:block;text-align:center;margin-bottom:12px">¿Quieres saber más?</span>
+  <p>Conoce nuestra historia y valores, o escanea el QR para compartir TerraLuz desde tu celular.</p>
+  <div class="backcta-btns">
+    <a href="index.html" class="btn-dark">← Volver al Inicio</a>
+    <a href="index.html#contacto" class="btn-out">Contáctanos</a>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-wrap">
+    <div class="ftop">
+      <div>
+        <div class="fbrand">🌿 TerraLuz</div>
+        <p class="fdesc">Cosmética natural, sostenible e inclusiva. Transformamos los residuos de la industria vitivinícola en belleza que cuida el planeta.</p>
+      </div>
+      <div class="fcol"><h4>Navegar</h4><ul><li><a href="index.html">Inicio</a></li><li><a href="index.html#nosotros">Nosotros</a></li><li><a href="productos.html">Productos</a></li><li><a href="index.html#servicios">Servicios</a></li><li><a href="index.html#contacto">Contacto</a></li></ul></div>
+      <div class="fcol"><h4>Productos</h4><ul><li>Bruma Facial 150ml</li><li>Aceite Corporal 120ml</li><li>Crema Regeneradora 50ml</li><li>Kit TerraLuz</li></ul></div>
+      <div class="fcol"><h4>Contacto</h4><ul><li>hola@terraluz.cl</li><li>+56 9 XXXX XXXX</li><li>Valle de Colchagua</li><li><a href="#">Instagram</a></li></ul></div>
+    </div>
+    <div class="fbot">
+      <p>© 2024 <span class="ac">TerraLuz</span> — Belleza que cuida el planeta</p>
+      <p>🌿 Natural · ♻️ Sostenible · ⠿ Inclusivo</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* NAV */
+  const topnav = document.getElementById('topnav')
+  window.addEventListener('scroll', () => topnav.classList.toggle('solid', window.scrollY > 80))
+  function toggleMenu() {
+    const o = document.getElementById('overlay').classList.toggle('open')
+    document.getElementById('ham').classList.toggle('open', o)
+    document.body.style.overflow = o ? 'hidden' : ''
+  }
+  function closeMenu() {
+    document.getElementById('overlay').classList.remove('open')
+    document.getElementById('ham').classList.remove('open')
+    document.body.style.overflow = ''
+  }
+
+  /* PARALLAX banner */
+  window.addEventListener('scroll', () => {
+    document.getElementById('bannerBg').style.transform = `translateY(${window.scrollY * 0.3}px)`
+  }, { passive: true })
+
+  /* SCROLL REVEAL */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show') })
+  }, { threshold: 0.08 })
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el))
+
+  /* FILTER */
+  function filter(cat, btn) {
+    document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('on'))
+    btn.classList.add('on')
+    document.querySelectorAll('[data-cat]').forEach(card => {
+      const show = cat === 'todos' || card.dataset.cat === cat
+      card.style.display = show ? '' : 'none'
+      if (show) setTimeout(() => card.classList.add('show'), 50)
+    })
+    const ks = document.getElementById('kitsec')
+    if (ks) ks.style.display = (cat === 'todos' || cat === 'kit') ? '' : 'none'
+  }
+</script>
+</body>
+</html>
